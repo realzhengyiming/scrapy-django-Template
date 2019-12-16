@@ -8,6 +8,11 @@ scrapy使用djangoItem 库，来使用django的models。这样就可以使用scr
 
 项目的目录如下：
 
+
+
+
+
+```python
 Scrapy-django
 ├───mydjango(django项目)
 │   │   manage.py
@@ -21,6 +26,7 @@ Scrapy-django
         ├───spiders
         │   meiju.py
         │__init__.py
+```
 
 
 
@@ -33,4 +39,10 @@ scrapy 1.7.3
 mysql 5.7
 
 scrapy_djangoitem
+
+
+
+# 示范结果
+
+![](example1.png)
 
