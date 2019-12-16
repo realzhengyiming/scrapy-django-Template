@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myapp.apps.MyappConfig',   #  这儿引入自己带有models的app
+    'siteapp'
 ]
 
 MIDDLEWARE = [
@@ -81,6 +82,7 @@ DATABASES = {
         'NAME': "django_Scrapy",
         'USER': 'root',
         'PASSWORD': '123456',
+        'OPTIONS': {'charset':'utf8mb4'},     # 都该成这种编码，避免emoji无法存储
         'HOST': "127.0.0.1",
         'PORT': '3306'
     }
