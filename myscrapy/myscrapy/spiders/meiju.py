@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from ..items import MeijuItem
+from ..items import ClassificationItem
 import json
 
 
@@ -34,24 +35,37 @@ class MeijuSpider(scrapy.Spider):
         }
     }
 
+
     def parse(self, response):
-        # print(response.text)
-        from bs4 import BeautifulSoup
-        from urllib.parse import urljoin        
-        soup  = BeautifulSoup(response.body,"lxml")
-        content = soup.find("div",attrs={'class':'m-movies clearfix'})
-        for article in content.find_all('article',attrs={'class':'u-movie'}):
+        # print(response.xpath("//article"))
+        for article in response.xpath("//article"):
             item = MeijuItem()
-            print(article)
-            print(article.a['href'])
-            print(article.a['title'])
-            print(article.find("img",attrs={'class':'thumb'})['data-original'])
-            print(article.find("div",attrs={'class':"pingfen"}).get_text())
 
-            item['name'] = article.a['title']
-            item['url']  = article.a['href']
-            item['grade'] = article.find("div",attrs={'class':"pingfen"}).get_text()
-            item['imgurl'] = article.find("img",attrs={'class':'thumb'})['data-original']
+            name = article.xpath("a").xpath('string(.)').extract()[0]
+            grade = article.xpath("div[@class='pingfen']").xpath("string(.)").extract()[0]
+            url = article.xpath("a/@href").extract()[0]
+            imgurl = article.xpath("a/div/img/@data-original").extract()[0]
+            # state = article.xpath("div[@class='zhuangtai']").xpath("string(.)").extract()
+            # print(name)
+            # print(grade)
+            # print(url)
+            # print(imgurl)
+            # 提取tags
+            tags = []
+            for a in article.xpath("div[@class='meta']/span[@class='tags']/a"):
+            # for a in article
+                tempa = a.xpath("text()").extract()
+                    # print(tempa)
+                tags += tempa
+            # print(tags)
+            # print()
 
-            print()
+            # 这儿需要注意的是，要保存的数据不要带['xxx'] ，而要直接'xx'
+            item['name'] = name
+            item['grade'] = grade
+            item['url'] = url
+            item['imgurl'] = imgurl
+            item['tags'] = tags
+
             yield item
+

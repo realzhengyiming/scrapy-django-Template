@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('site/',include("siteapp.urls")), # 这样就可以一次性导入一整个应用的映射 ,app_name="siteapp"
+
 ]

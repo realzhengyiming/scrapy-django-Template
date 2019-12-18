@@ -1,0 +1,64 @@
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>统计调查问卷的结果</title>#}
+{#</head>#}
+{#<body>#}
+{% extends "polls/Base.html" %}
+
+
+{% block content %}
+
+<div  class="mdui-center mdui-text-center">
+<h1>{{ question.question_text }}</h1>
+{% for choice in question.choice_set.all %}
+    <li>{{ choice.choice_text }} -- 计票 {{ choice.votes }} {{ choice.votes|pluralize }}次</li>
+{% endfor %}
+<a href="{% url 'polls:vote' question.id %}">重新投票</a>
+</div>
+
+
+{#下面的这个是饼图#}
+       <div class="container" style="height: 100%"></div>
+    <div id="main" style="width: 600px;height:400px;" class="mdui-center"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '投票结果如下'
+            },
+            tooltip: {},
+            legend: {
+                data:['{{ question.question_text }}']
+            },
+            xAxis: {
+                data: [
+                    {% for i in choice_all  %}
+                    '{{ i }}',
+                    {% endfor %}]
+            },
+            yAxis: {},
+            series: [{
+                name: '票数',
+                type: 'bar',
+                data: [
+                    {% for choice in question.choice_set.all %}
+                        {value:{{ choice.votes }}, name:'{{choice.choice_text}}'},
+                    {% endfor %}
+                ]
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+
+{% endblock %}
+
+
+{#</body>#}
+{#</html>#}

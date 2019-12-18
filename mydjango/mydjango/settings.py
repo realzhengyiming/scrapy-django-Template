@@ -79,10 +79,13 @@ WSGI_APPLICATION = 'mydjango.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': "django_Scrapy",
+        'NAME': "scrapy_django",
         'USER': 'root',
         'PASSWORD': '123456',
-        'OPTIONS': {'charset':'utf8mb4'},     # 都该成这种编码，避免emoji无法存储
+        'OPTIONS': {
+                'charset':'utf8mb4',
+                 # "init_command": "SET foreign_key_checks = 0;",
+                },     # 都该成这种编码，避免emoji无法存储
         'HOST': "127.0.0.1",
         'PORT': '3306'
     }

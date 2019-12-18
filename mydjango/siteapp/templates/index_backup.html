@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎来到投票系统</title>
+{#    {% block static_loader %}#}
+{#    {% endblock %}#}
+    <link rel="stylesheet" href="{% static 'css/mdui.min.css' %}">
+    <script src="{% static 'js/mdui.js' %}"></script>
+
+</head>
+<body>
+{{ static }}
+<button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent mdui-color-red-400">Button</button>
+{%  if latest_question_list  %}
+<ul>
+    {% for question in latest_question_list %}
+        <li><a target="_blank" href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+{#        <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>#}
+{#        以上的也可以添加多个参数  "url 'detail' question 'index' question等"  #}
+    {% endfor %}
+</ul>
+{% else %}
+<p>还没有调查问卷</p>
+{% endif %}
+</body>
+</html>

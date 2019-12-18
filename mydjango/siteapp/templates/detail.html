@@ -1,0 +1,36 @@
+{% extends 'polls/Base.html' %}
+
+{% block content %}
+<h1 >{{ question.question_text }}</h1>
+<img src="{{ question.photos.url }}" style="height:60px;width: auto"/><br>
+
+{% for choice in question.choice_set.all %}
+    <li >{{ choice.choice_text }}</li>
+{% endfor %}
+
+{% if error_message %}
+<p ><strong>{{ error_message }}</strong></p>
+{% endif %}
+
+<div class="mdui-center">
+<form action="{% url 'polls:vote' question.id %}" method="post">
+        {% csrf_token %}
+        {% for choice in question.choice_set.all %}
+
+            <label class="mdui-radio" for="choice{{ forloop.counter }}" style="margin-left: 20px">
+                <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}"/>
+                <i class="mdui-radio-icon"></i>
+                {{ choice.choice_text }}
+              </label>
+
+{#            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />#}
+{#            <label class="mdui-radio" for="choice{{ forloop.counter }}" >{{ choice.choice_text }}</label>#}
+{#            这种方法就可以自动标识为choice1  choice2这样了#}
+        {% endfor %}
+
+            <input class="mdui-btn mdui-color-theme-400" type="submit" value ="提交 " style="margin-left: 20px" />
+</form>
+</div>
+
+
+{% endblock %}
