@@ -22,6 +22,7 @@ class MeijuSpider(scrapy.Spider):
             # 'JobCrawl.middlewares.proxyMiddleware': 100,   # 使用代理
            # 'tutorial.middlewares.ProxyMiddleware':301
         # },
+        'DOWNLOAD_DELAY' : 3,  # 慢慢爬呗
         "DEFAULT_REQUEST_HEADERS":{
             'Accept': 'application/json',
             'Accept-Language': 'zh-CN,zh;q=0.9',
@@ -68,4 +69,10 @@ class MeijuSpider(scrapy.Spider):
             item['tags'] = tags
 
             yield item
+
+        # 找下一页，然后回调这个函数
+        nextUrl = response.xpath("//li[@class='next-page']/a/@href").extract()[0]
+        print("下一页")
+        print(nextUrl)
+        yield scrapy.Request(url=nextUrl, callback=self.parse, dont_filter=True)
 

@@ -1,7 +1,7 @@
 from django.contrib import admin
 # from .models import Job
 # from .models import News
-from .models import Meiju
+from .models import Meiju,Classification
 
 
 # Register your models here.
@@ -23,3 +23,4 @@ class MeijuAdmin(admin.ModelAdmin):
     readonly_fields = ['show_photos']
     
 admin.site.register(Meiju, MeijuAdmin)
+admin.site.register(Classification)
